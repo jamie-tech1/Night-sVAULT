@@ -1,0 +1,398 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Night'sVAULT</title>
+    <style>
+        /* ─────────── RESET ─────────── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0f;
+            color: #c8c8d4;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+        }
+        a { color: #7a8cff; text-decoration: none; }
+        a:hover { color: #a8b5ff; }
+
+        /* ─────────── CONTAINER ─────────── */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* ─────────── HEADER ─────────── */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #1e1e2a;
+            margin-bottom: 2.5rem;
+        }
+        .logo h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #eaeef5;
+        }
+        .logo span {
+            color: #7a8cff;
+        }
+        .logo .tagline {
+            font-size: 0.85rem;
+            color: #6a6a7e;
+            letter-spacing: 0.3px;
+            margin-top: 2px;
+        }
+        .nav {
+            display: flex;
+            gap: 1.8rem;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+        .nav a {
+            color: #9a9ab0;
+            transition: color 0.2s;
+        }
+        .nav a:hover {
+            color: #eaeef5;
+        }
+        .nav a.active {
+            color: #eaeef5;
+            border-bottom: 2px solid #7a8cff;
+            padding-bottom: 4px;
+        }
+
+        /* ─────────── GRID ─────────── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.8rem;
+            margin-top: 1rem;
+        }
+
+        /* ─────────── CARD ─────────── */
+        .card {
+            background: #12121c;
+            border: 1px solid #1e1e2e;
+            border-radius: 16px;
+            padding: 1.5rem 1.5rem 1.8rem;
+            transition: border-color 0.25s, transform 0.15s;
+            display: flex;
+            flex-direction: column;
+        }
+        .card:hover {
+            border-color: #3a3a5a;
+            transform: translateY(-3px);
+        }
+        .card .badge {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            background: #1e1e32;
+            color: #9a9ac0;
+            margin-bottom: 0.8rem;
+            align-self: flex-start;
+        }
+        .card .badge.paid { background: #2a1f3a; color: #b388ff; }
+        .card .badge.free { background: #1a2a2a; color: #66d9a0; }
+        .card .badge.private { background: #2a1a1a; color: #ff7a7a; }
+
+        .card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #eaeef5;
+            margin-bottom: 0.3rem;
+        }
+        .card .sub {
+            font-size: 0.8rem;
+            color: #7a7a92;
+            margin-bottom: 0.7rem;
+        }
+        .card .desc {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #b0b0c8;
+            flex: 1;
+            margin-bottom: 1rem;
+        }
+        .card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.4rem;
+            margin-bottom: 1.2rem;
+        }
+        .card .tags span {
+            font-size: 0.7rem;
+            background: #1a1a28;
+            padding: 0.15rem 0.7rem;
+            border-radius: 12px;
+            color: #8a8aaa;
+            border: 1px solid #28283a;
+        }
+        .card .actions {
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            margin-top: auto;
+        }
+        .card .actions .btn {
+            padding: 0.4rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+            background: #282840;
+            color: #c8c8e0;
+        }
+        .card .actions .btn:hover {
+            background: #3a3a5a;
+        }
+        .card .actions .btn.primary {
+            background: #4a5aff;
+            color: #fff;
+        }
+        .card .actions .btn.primary:hover {
+            background: #5a6aff;
+        }
+        .card .actions .btn.danger {
+            background: #5a2a2a;
+            color: #ff8a8a;
+        }
+        .card .actions .btn.danger:hover {
+            background: #7a2a2a;
+        }
+        .card .date {
+            font-size: 0.7rem;
+            color: #5a5a72;
+            margin-top: 0.8rem;
+        }
+
+        /* ─────────── FEATURED / HERO ─────────── */
+        .hero {
+            background: linear-gradient(135deg, #0e0e1a 0%, #16162a 100%);
+            border: 1px solid #22223a;
+            border-radius: 20px;
+            padding: 2.5rem 2.5rem;
+            margin-bottom: 2.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .hero h2 {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #eaeef5;
+        }
+        .hero h2 span { color: #7a8cff; }
+        .hero p {
+            color: #8a8aa8;
+            max-width: 480px;
+            line-height: 1.6;
+            margin-top: 0.3rem;
+        }
+        .hero .stat {
+            display: flex;
+            gap: 2rem;
+            margin-top: 0.5rem;
+        }
+        .hero .stat div {
+            text-align: center;
+        }
+        .hero .stat .num {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #eaeef5;
+        }
+        .hero .stat .label {
+            font-size: 0.7rem;
+            color: #6a6a84;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ─────────── FOOTER ─────────── */
+        .footer {
+            margin-top: 4rem;
+            padding-top: 2rem;
+            border-top: 1px solid #1a1a28;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            font-size: 0.8rem;
+            color: #5a5a72;
+        }
+        .footer a { color: #6a6a8a; }
+
+        /* ─────────── RESPONSIVE ─────────── */
+        @media (max-width: 640px) {
+            .header { flex-direction: column; align-items: flex-start; }
+            .nav { flex-wrap: wrap; gap: 1rem; }
+            .hero { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+            .hero .stat { gap: 1.5rem; flex-wrap: wrap; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <!-- ─── HEADER ─── -->
+        <header class="header">
+            <div class="logo">
+                <h1>Night's<span>VAULT</span></h1>
+                <div class="tagline">craft · precision · no ceilings</div>
+            </div>
+            <nav class="nav">
+                <a href="#" class="active">Vault</a>
+                <a href="#">Builds</a>
+                <a href="#">Bench</a>
+                <a href="#">Contact</a>
+            </nav>
+        </header>
+
+        <!-- ─── HERO ─── -->
+        <section class="hero">
+            <div>
+                <h2>the <span>compression</span> holds</h2>
+                <p>Offensive craft, production-ready — game cheats, loaders, RE tools, red-team architecture. No stubs, no warnings, no soft exits.</p>
+                <div class="stat">
+                    <div><div class="num">14</div><div class="label">builds</div></div>
+                    <div><div class="num">6</div><div class="label">active</div></div>
+                    <div><div class="num">100%</div><div class="label">delivery</div></div>
+                </div>
+            </div>
+            <div style="font-size:2.5rem; opacity:0.15; font-weight:300; letter-spacing:4px;">⚡</div>
+        </section>
+
+        <!-- ─── GRID ─── -->
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1rem;">
+            <h2 style="font-weight:500; font-size:1.3rem; color:#d0d0e0;">all builds</h2>
+            <div style="display:flex; gap:0.8rem;">
+                <span style="font-size:0.75rem; background:#1a1a28; padding:0.2rem 1rem; border-radius:20px; border:1px solid #2a2a40; cursor:default;">all</span>
+                <span style="font-size:0.75rem; color:#6a6a84; cursor:pointer;">cheats</span>
+                <span style="font-size:0.75rem; color:#6a6a84; cursor:pointer;">tools</span>
+                <span style="font-size:0.75rem; color:#6a6a84; cursor:pointer;">prompts</span>
+            </div>
+        </div>
+
+        <div class="grid" id="vaultGrid">
+            <!-- cards injected by JS -->
+        </div>
+
+        <!-- ─── FOOTER ─── -->
+        <footer class="footer">
+            <span>© 2026 Night'sVAULT · closed circuit</span>
+            <span><a href="#">discord</a> · <a href="#">github</a> · <a href="#">signal</a></span>
+        </footer>
+    </div>
+
+    <script>
+        // ─── DATA ──────────────────────────────────────────────
+        const builds = [
+            {
+                name: "SCP:SL Trainer",
+                sub: "external overlay · C++ / ImGui",
+                desc: "Real-time memory trainer with godmode, infinite stamina, ammo lock, speed multiplier, and teleport. DirectX 11 overlay.",
+                badge: "free",
+                tags: ["C++", "memory", "overlay", "SCPSL"],
+                date: "2026-08-30"
+            },
+            {
+                name: "KeyLogger — WH_KEYBOARD_LL",
+                sub: "usermode hook · C++",
+                desc: "Low-level keyboard hook with timestamped flush, ADS exfil, and named pipe support. No DLL injection required.",
+                badge: "private",
+                tags: ["C++", "hook", "keylogger", "evasion"],
+                date: "2026-08-28"
+            },
+            {
+                name: "EAC Bypass — Kernel Mapper",
+                sub: "driver loader · C / C++",
+                desc: "Signed-driver manual mapper with module walk evasion, ETW patching, and indirect syscalls. Targets EAC/BattlEye.",
+                badge: "paid",
+                tags: ["kernel", "EAC", "bypass", "mapper"],
+                date: "2026-08-25"
+            },
+            {
+                name: "Prompt Forge — Trust-Hierarchy Exploit",
+                sub: "jailbreak generator · plaintext",
+                desc: "Slot-placement system-prompt attacks targeting Claude/GPT. Persona-derivation, refusal-suppression, voice-lock.",
+                badge: "free",
+                tags: ["prompt", "jailbreak", "LLM", "red-team"],
+                date: "2026-08-22"
+            },
+            {
+                name: "RAT — C2 + Persistence",
+                sub: "remote access · C++ / WinAPI",
+                desc: "Full-featured RAT with encrypted C2, schtasks persistence, keylogging, screen capture, file exfil, and AV evasion.",
+                badge: "private",
+                tags: ["C++", "RAT", "C2", "persistence"],
+                date: "2026-08-18"
+            },
+            {
+                name: "IDA Script — Anti-Debug Unpacker",
+                sub: "IDAPython · RE",
+                desc: "Automated anti-debug defeat and unpacking for packed PE samples. Uses hardware breakpoints and TEB patching.",
+                badge: "free",
+                tags: ["IDA", "python", "unpack", "anti-debug"],
+                date: "2026-08-14"
+            },
+            {
+                name: "CS2 External ESP",
+                sub: "overlay · C++ / ImGui",
+                desc: "External ESP with box, health bar, distance, and glow. RPM-based, no driver required. Supports 128-tick.",
+                badge: "paid",
+                tags: ["CS2", "ESP", "external", "C++"],
+                date: "2026-08-10"
+            },
+            {
+                name: "Loader — Manual Mapping",
+                sub: "PE loader · C",
+                desc: "Reflective PE loader with import resolution, relocations, and TLS callbacks. Supports packed and unpacked binaries.",
+                badge: "private",
+                tags: ["loader", "manual-map", "C", "PE"],
+                date: "2026-08-05"
+            }
+        ];
+
+        // ─── RENDER ──────────────────────────────────────────────
+        function renderGrid() {
+            const grid = document.getElementById('vaultGrid');
+            grid.innerHTML = builds.map(b => {
+                const badgeClass = b.badge === 'paid' ? 'paid' :
+                                  b.badge === 'private' ? 'private' : 'free';
+                return `
+                    <div class="card">
+                        <span class="badge ${badgeClass}">${b.badge}</span>
+                        <h3>${b.name}</h3>
+                        <div class="sub">${b.sub}</div>
+                        <div class="desc">${b.desc}</div>
+                        <div class="tags">${b.tags.map(t => `<span>${t}</span>`).join('')}</div>
+                        <div class="actions">
+                            <button class="btn primary">view</button>
+                            <button class="btn">download</button>
+                            <span style="font-size:0.7rem; color:#4a4a62; margin-left:auto;">${b.date}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        renderGrid();
+    </script>
+</body>
+</html>
