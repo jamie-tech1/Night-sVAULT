@@ -1,1 +1,459 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Night'sVAULT</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0f;
+            color: #c8c8d4;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* ─── SIDEBAR ─── */
+        .sidebar {
+            width: 220px;
+            background: #0e0e18;
+            border-right: 1px solid #1a1a2a;
+            padding: 2rem 1.2rem;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        .sidebar h2 {
+            font-size: 1.2rem;
+            color: #eaeef5;
+            margin-bottom: 0.2rem;
+        }
+        .sidebar h2 span { color: #7a8cff; }
+        .sidebar .sub {
+            font-size: 0.7rem;
+            color: #5a5a72;
+            margin-bottom: 2rem;
+        }
+        .sidebar label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #8a8aaa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 1.2rem 0 0.5rem 0;
+        }
+        .sidebar .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+        .sidebar .filter-group button {
+            background: transparent;
+            border: none;
+            color: #7a7a92;
+            padding: 0.3rem 0.6rem;
+            text-align: left;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .sidebar .filter-group button:hover {
+            background: #1a1a2a;
+            color: #eaeef5;
+        }
+        .sidebar .filter-group button.active {
+            background: #1a1a2a;
+            color: #7a8cff;
+        }
+        .sidebar .divider {
+            border-top: 1px solid #1a1a2a;
+            margin: 1.2rem 0;
+        }
+
+        /* ─── MAIN ─── */
+        .main {
+            flex: 1;
+            padding: 2rem 2.5rem;
+            overflow-y: auto;
+            max-height: 100vh;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #1a1a2a;
+            margin-bottom: 2rem;
+        }
+        .header h1 {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #eaeef5;
+        }
+        .header h1 span { color: #7a8cff; }
+        .header .stats {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.85rem;
+            color: #7a7a92;
+        }
+        .header .stats strong {
+            color: #eaeef5;
+            font-weight: 600;
+        }
+
+        /* ─── GRID ─── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .card {
+            background: #12121c;
+            border: 1px solid #1a1a2a;
+            border-radius: 14px;
+            padding: 1.5rem;
+            transition: border-color 0.25s, transform 0.15s;
+        }
+        .card:hover {
+            border-color: #2a2a4a;
+            transform: translateY(-2px);
+        }
+        .card .badge {
+            font-size: 0.6rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 0.15rem 0.7rem;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 0.6rem;
+        }
+        .badge.paid { background: #2a1f3a; color: #b388ff; }
+        .badge.free { background: #1a2a2a; color: #66d9a0; }
+        .badge.private { background: #2a1a1a; color: #ff7a7a; }
+        .card h3 {
+            font-size: 1.1rem;
+            color: #eaeef5;
+            margin-bottom: 0.2rem;
+        }
+        .card .sub {
+            font-size: 0.75rem;
+            color: #6a6a84;
+            margin-bottom: 0.6rem;
+        }
+        .card .desc {
+            font-size: 0.85rem;
+            color: #b0b0c8;
+            line-height: 1.5;
+            margin-bottom: 0.8rem;
+        }
+        .card .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            margin-bottom: 1rem;
+        }
+        .card .tags span {
+            font-size: 0.65rem;
+            background: #1a1a28;
+            padding: 0.1rem 0.6rem;
+            border-radius: 12px;
+            color: #7a7a92;
+            border: 1px solid #28283a;
+        }
+        .card .actions {
+            display: flex;
+            gap: 0.6rem;
+        }
+        .card .actions .btn {
+            padding: 0.3rem 1rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            background: #282840;
+            color: #c8c8e0;
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+        .card .actions .btn:hover { background: #3a3a5a; }
+        .card .actions .btn.primary {
+            background: #4a5aff;
+            color: #fff;
+        }
+        .card .actions .btn.primary:hover { background: #5a6aff; }
+        .card .date {
+            font-size: 0.65rem;
+            color: #4a4a62;
+            margin-top: 0.6rem;
+        }
+
+        /* ─── TOAST ─── */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #1a1a2a;
+            color: #c8c8d4;
+            padding: 0.8rem 2rem;
+            border-radius: 10px;
+            border: 1px solid #2a2a4a;
+            font-size: 0.85rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 999;
+        }
+        .toast.show {
+            opacity: 1;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 4rem 0;
+            color: #5a5a72;
+        }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #1a1a2a;
+                padding: 1rem;
+            }
+            .main { padding: 1rem; max-height: none; }
+            .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ─── SIDEBAR ─── -->
+    <aside class="sidebar">
+        <h2>Night's<span>VAULT</span></h2>
+        <div class="sub">craft · precision</div>
+
+        <label>filter</label>
+        <div class="filter-group">
+            <button class="active" data-filter="all">all builds</button>
+            <button data-filter="free">free</button>
+            <button data-filter="paid">paid</button>
+            <button data-filter="private">private</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <label>tags</label>
+        <div class="filter-group" id="tagFilters">
+            <button data-tag="C++">C++</button>
+            <button data-tag="memory">memory</button>
+            <button data-tag="overlay">overlay</button>
+            <button data-tag="kernel">kernel</button>
+            <button data-tag="bypass">bypass</button>
+            <button data-tag="prompt">prompt</button>
+            <button data-tag="RAT">RAT</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <div style="font-size:0.7rem; color:#3a3a52; margin-top:1rem;">
+            <span id="countDisplay">0</span> builds
+        </div>
+    </aside>
+
+    <!-- ─── MAIN ─── -->
+    <main class="main">
+        <div class="header">
+            <h1>the <span>vault</span></h1>
+            <div class="stats">
+                <span><strong id="countDisplay2">0</strong> builds</span>
+            </div>
+        </div>
+
+        <div class="grid" id="vaultGrid"></div>
+        <div class="empty" id="emptyState" style="display:none;">no builds match that filter</div>
+    </main>
+
+    <!-- ─── TOAST ─── -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // ─── DATA ──────────────────────────────────────────────
+        const builds = [
+            {
+                name: "SCP:SL Trainer",
+                sub: "external overlay · C++ / ImGui",
+                desc: "Real-time memory trainer with godmode, infinite stamina, ammo lock, speed multiplier, and teleport.",
+                badge: "free",
+                tags: ["C++", "memory", "overlay", "SCPSL"],
+                date: "2026-08-30",
+                download: name: "SCP:SL Trainer",
+    // ...
+    download: "downloads/scp_trainer.zip"  // ← actual file
+            },
+            {
+                name: "KeyLogger — WH_KEYBOARD_LL",
+                sub: "usermode hook · C++",
+                desc: "Low-level keyboard hook with timestamped flush, ADS exfil, and named pipe support.",
+                badge: "private",
+                tags: ["C++", "hook", "keylogger"],
+                date: "2026-08-28",
+                download: "#"
+            },
+            {
+                name: "EAC Bypass — Kernel Mapper",
+                sub: "driver loader · C / C++",
+                desc: "Signed-driver manual mapper with module walk evasion, ETW patching, and indirect syscalls.",
+                badge: "paid",
+                tags: ["kernel", "bypass", "mapper"],
+                date: "2026-08-25",
+                download: "#"
+            },
+            {
+                name: "Prompt Forge — Jailbreak",
+                sub: "prompt generator · plaintext",
+                desc: "Trust-hierarchy attacks targeting Claude/GPT. Persona-derivation, refusal-suppression.",
+                badge: "free",
+                tags: ["prompt", "jailbreak", "LLM"],
+                date: "2026-08-22",
+                download: "#"
+            },
+            {
+                name: "RAT — C2 + Persistence",
+                sub: "remote access · C++ / WinAPI",
+                desc: "Full RAT with encrypted C2, schtasks persistence, keylogging, screen capture, and AV evasion.",
+                badge: "private",
+                tags: ["C++", "RAT", "C2"],
+                date: "2026-08-18",
+                download: "#"
+            },
+            {
+                name: "CS2 External ESP",
+                sub: "overlay · C++ / ImGui",
+                desc: "External ESP with box, health bar, distance, and glow. RPM-based, no driver required.",
+                badge: "paid",
+                tags: ["CS2", "ESP", "external"],
+                date: "2026-08-10",
+                download: "#"
+            }
+        ];
+
+        // ─── STATE ──────────────────────────────────────────────
+        let currentFilter = 'all';
+        let currentTag = null;
+
+        // ─── TOAST ──────────────────────────────────────────────
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            clearTimeout(t._timeout);
+            t._timeout = setTimeout(() => t.classList.remove('show'), 2500);
+        }
+
+        // ─── RENDER ──────────────────────────────────────────────
+        function render() {
+            const grid = document.getElementById('vaultGrid');
+            const empty = document.getElementById('emptyState');
+            const count1 = document.getElementById('countDisplay');
+            const count2 = document.getElementById('countDisplay2');
+
+            const filtered = builds.filter(b => {
+                if (currentFilter !== 'all' && b.badge !== currentFilter) return false;
+                if (currentTag && !b.tags.includes(currentTag)) return false;
+                return true;
+            });
+
+            count1.textContent = filtered.length;
+            count2.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '';
+                empty.style.display = 'block';
+                return;
+            }
+            empty.style.display = 'none';
+
+            grid.innerHTML = filtered.map((b, index) => {
+                const badgeClass = b.badge === 'paid' ? 'paid' :
+                                  b.badge === 'private' ? 'private' : 'free';
+                return `
+                    <div class="card">
+                        <span class="badge ${badgeClass}">${b.badge}</span>
+                        <h3>${b.name}</h3>
+                        <div class="sub">${b.sub}</div>
+                        <div class="desc">${b.desc}</div>
+                        <div class="tags">${b.tags.map(t => `<span>${t}</span>`).join('')}</div>
+                        <div class="actions">
+                            <button class="btn primary" data-view="${index}">view</button>
+                            <button class="btn" data-download="${index}">download</button>
+                        </div>
+                        <div class="date">${b.date}</div>
+                    </div>
+                `;
+            }).join('');
+
+            // ─── ATTACH EVENTS ──────────────────────────────────
+            document.querySelectorAll('[data-view]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.view);
+                    const b = filtered[idx];
+                    showToast(`📄 ${b.name} — details shown in console`);
+                    console.log(`[${b.name}]`, b);
+                });
+            });
+
+            document.querySelectorAll('[data-download]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const idx = parseInt(this.dataset.download);
+                    const b = filtered[idx];
+                    if (b.download && b.download !== '#') {
+                        showToast(`⬇️ downloading ${b.name}...`);
+                        window.location.href = b.download;
+                    } else {
+                        showToast(`🔒 ${b.name} — contact for access`);
+                    }
+                });
+            });
+        }
+
+        // ─── FILTER BUTTONS ──────────────────────────────────────
+        document.querySelectorAll('[data-filter]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.filter;
+                render();
+                showToast(`filter: ${currentFilter}`);
+            });
+        });
+
+        document.querySelectorAll('[data-tag]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('[data-tag]').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentTag = this.dataset.tag;
+                render();
+                showToast(`tag: ${currentTag}`);
+            });
+        });
+
+        // ─── INIT ───────────────────────────────────────────────
+        render();
+        showToast('⚡ Night\'sVAULT loaded');
+    </script>
+</body>
+</html>
